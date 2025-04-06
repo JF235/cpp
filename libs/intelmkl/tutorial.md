@@ -129,6 +129,47 @@ MKL_VERBOSE SGEMM(N,N,64,64,64,0x7ffd8d7f9520,0x583a584af2a0,64,0x583a584ab290,6
 
 Mostrando que está usando AVX2.
 
+# MKL in the wild
+
+You can use different environments for the comparison of Numpy with and without MKL. In each environment you can install the needed packages(numpy with MKL or without) using package installer. Then on that environments you can run your program to compare the performance of Numpy with and without MKL.
+
+NumPy doesn’t depend on any other Python packages, however, it does depend on an accelerated linear algebra library - typically Intel MKL or OpenBLAS.
+
+    The NumPy wheels on PyPI, which is what pip installs, are built with OpenBLAS.
+
+    In the conda defaults channel, NumPy is built against Intel MKL. MKL is a separate package that will be installed in the users' environment when they install NumPy.
+
+    When a user installs NumPy from conda-forge, that BLAS package then gets installed together with the actual library.But it can also be MKL (from the defaults channel), or even BLIS or reference BLAS.
+
+Please refer this link to know about installing Numpy in detail.
+
+You can create two different environments to compare the NumPy performance with MKL and without it. In the first environment install the stand-alone NumPy (that is, the NumPy without MKL) and in the second environment install the one with MKL.
+
+To create environment using NumPy without MKL.
+
+conda create -n <env_name_1> python=<version>
+conda activate <env_name_1>
+pip install numpy
+
+But depending on your OS, it might be possible that there is no distribution available (Windows).
+
+On Windows, we have always been linking against MKL. However, with the Anaconda 2.5 release we separated the MKL runtime into its own conda package, in order to do things uniformly on all platforms.
+
+In general you can create a new env:
+
+conda create -n wheel_based python
+activate wheel
+pip install numpy-1.13.3-cp36-none-win_amd64.whl  # or whatever the file is named
+
+In the other environment, install NumPy with MKL using below command
+
+conda create -n <env_name_2> python=<version>
+conda activate <env_name_2>
+pip install intel-numpy
+
+In these environments <env_name_1> and <env_name_2> you can run your program seperately, so that you can compare the performance of Numpy without MKL and With MKL respectively.
+
+
 # Apêndice: Introdução ao CBLAS
 
 O CBLAS (C Bindings for Basic Linear Algebra Subprograms) é uma interface em linguagem C para as funções definidas na especificação BLAS (*Basic Linear Algebra Subprograms*), um padrão amplamente utilizado para operações básicas de álgebra linear, como multiplicação de matrizes, produtos vetoriais e transformações.  
